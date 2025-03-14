@@ -10,7 +10,7 @@ const eventParticipationSchema = new mongoose.Schema({
     ref: "Event",
     required: true,
   },
-  hours_logged: { type: Number, required: true },
+  hours_logged: { type: Number, required: false },
   verified: { type: Boolean, default: false },
   verified_by: { type: [mongoose.Schema.Types.ObjectId], ref: "User" },
   created_at: { type: Date, default: Date.now },
