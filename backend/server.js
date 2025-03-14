@@ -15,6 +15,7 @@ connectDB();
 
 // Route files
 const auth = require("./routes/auth");
+const category = require("./routes/category");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(cors());
 
 // Mount routers
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/categories", category);
 app.get("/", (req, res) => {
   res
     .status(200)
