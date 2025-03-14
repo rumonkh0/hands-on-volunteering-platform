@@ -1,42 +1,52 @@
 const mongoose = require("mongoose");
-const eventSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema(
+  {
     title: {
       type: String,
-      required: [true, 'Event title is required'],
+      required: [true, "Event title is required"],
       trim: true,
-      maxlength: [200, 'Event title cannot exceed 200 characters']
+      maxlength: [200, "Event title cannot exceed 200 characters"],
     },
     description: {
       type: String,
-      required: [true, 'Event description is required'],
+      required: [true, "Event description is required"],
       trim: true,
-      maxlength: [1000, 'Event description cannot exceed 1000 characters']
+      maxlength: [1000, "Event description cannot exceed 1000 characters"],
     },
     date: {
       type: Date,
-      required: [true, 'Event date is required']
+      required: [true, "Event date is required"],
     },
     time: {
       type: String,
-      required: [true, 'Event time is required']
+      required: [true, "Event time is required"],
     },
     location: {
       type: String,
-      required: [true, 'Event location is required'],
+      required: [true, "Event location is required"],
       trim: true,
-      maxlength: [200, 'Event location cannot exceed 200 characters']
+      maxlength: [200, "Event location cannot exceed 200 characters"],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category', 
-      required: [true, 'Event category is required']
+      ref: "Category",
+      required: [true, "Event category is required"],
     },
     created_by: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Event creator is required']
-    }
+      ref: "User",
+      required: [true, "Event creator is required"],
+    },
+    team_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team",
+    },
+    is_public: {
+      type: Boolean,
+      default: true,
+    },
   },
-  { timestamp: true });
-  
-  module.exports =  mongoose.model('Event', eventSchema);
+  { timestamp: true }
+);
+
+module.exports = mongoose.model("Event", eventSchema);

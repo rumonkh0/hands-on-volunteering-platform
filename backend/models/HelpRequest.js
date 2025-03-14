@@ -25,6 +25,25 @@ const helpRequestSchema = new mongoose.Schema(
       ref: "User", // Reference to the user who created the request
       required: [true, "Creator is required"],
     },
+    comments: [
+      {
+        text: {
+          type: String,
+          required: [true, "Comment text is required"],
+          trim: true,
+          maxlength: [500, "Comment cannot exceed 500 characters"],
+        },
+        posted_by: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User", // Reference to the user who posted the comment
+          required: [true, "Commenter is required"],
+        },
+        created_at: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     status: {
       type: String,
       enum: ["Open", "In Progress", "Closed"], // Request status

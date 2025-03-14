@@ -8,7 +8,19 @@ const EventParticipation = require("../models/EventParticipation");
 // @route     POST /api/v1/events
 // @access    Private
 exports.createEvent = asyncHandler(async (req, res, next) => {
-  const { title, description, date, time, location, category } = req.body;
+  const { title, description, date, time, location, category, team_id } =
+    req.body;
+
+  let is_public = true;
+
+  // If the event is associated with a team, inherit the team's visibility setting
+  if (team_id) {
+    const team = await Team.findById(team_id);
+    if (!team) {
+      return next(new ErrorResponse(`Team not found with id ${team_id}`, 404));
+    }
+    is_public = team.is_public;
+  }
 
   // Create the event
   const event = await Event.create({
@@ -19,6 +31,8 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
     location,
     category,
     created_by: req.user.id,
+    team_id,
+    is_public,
   });
 
   res.status(201).json({ success: true, data: event });
@@ -138,26 +152,27 @@ exports.getEventsByUser = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/events/:id/users
 // @access    Public
 exports.getUsersByEvents = asyncHandler(async (req, res, next) => {
-    const eventId = req.params.id;
-  
-    // Check if the event exists
-    const event = await Event.findById(eventId);
-    if (!event) {
-      return next(new ErrorResponse(`Event not found with id ${eventId}`, 404));
-    }
-  
-    // Fetch all VolunteerHours records for the event and populate user details
-    const volunteerHours = await VolunteerHours.find({ event_id: eventId })
-      .populate('user_id', 'name email')
-  
-    // Extract user details and hours logged
-    const users = volunteerHours.map(record => ({
-      user: record.user_id,
-      hours_logged: record.hours_logged,
-      verified: record.verified,
-      verified_by: record.verified_by,
-      created_at: record.created_at
-    }));
-  
-    res.status(200).json({ success: true, count: users.length, data: users });
-  });
+  const eventId = req.params.id;
+
+  // Check if the event exists
+  const event = await Event.findById(eventId);
+  if (!event) {
+    return next(new ErrorResponse(`Event not found with id ${eventId}`, 404));
+  }
+
+  // Fetch all VolunteerHours records for the event and populate user details
+  const volunteerHours = await VolunteerHours.find({
+    event_id: eventId,
+  }).populate("user_id", "name email");
+
+  // Extract user details and hours logged
+  const users = volunteerHours.map((record) => ({
+    user: record.user_id,
+    hours_logged: record.hours_logged,
+    verified: record.verified,
+    verified_by: record.verified_by,
+    created_at: record.created_at,
+  }));
+
+  res.status(200).json({ success: true, count: users.length, data: users });
+});
