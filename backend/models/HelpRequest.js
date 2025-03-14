@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const helpRequestSchema = new mongoose.Schema(
   {
     title: {

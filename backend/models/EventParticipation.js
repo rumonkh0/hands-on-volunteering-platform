@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const eventParticipationSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
