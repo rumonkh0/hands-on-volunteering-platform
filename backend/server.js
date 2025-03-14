@@ -13,6 +13,9 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to database
 connectDB();
 
+// Route files
+const auth = require("./routes/auth");
+
 const app = express();
 
 // Body parser
@@ -29,10 +32,12 @@ if (process.env.NODE_ENV === "development") {
 // Enable CORS
 app.use(cors());
 
+// Mount routers
+app.use("/api/v1/auth", auth);
 app.get("/", (req, res) => {
   res
     .status(200)
-    .json({ success: true, message: "Welcome to hand on volunteering!" });
+    .json({ success: true, message: "Welcome to hands on volunteering!" });
 });
 
 app.use(errorHandler);

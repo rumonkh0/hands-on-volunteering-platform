@@ -32,4 +32,4 @@ const helpRequestSchema = new mongoose.Schema(
   { timestamp: true }
 );
 
-const HelpRequest = mongoose.model("HelpRequest", helpRequestSchema);
+module.exports = mongoose.model("HelpRequest", helpRequestSchema);

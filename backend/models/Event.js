@@ -38,4 +38,4 @@ const eventSchema = new mongoose.Schema({
   },
   { timestamp: true });
   
-  const Event = mongoose.model('Event', eventSchema);
+  module.exports =  mongoose.model('Event', eventSchema);

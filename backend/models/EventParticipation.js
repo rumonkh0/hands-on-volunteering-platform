@@ -15,7 +15,7 @@ const eventParticipationSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
 });
 
-const EventParticipation = mongoose.model(
+module.exports =  mongoose.model(
   "EventParticipation",
   eventParticipationSchema
 );
